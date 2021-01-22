@@ -2,14 +2,10 @@ package com.company.dao;
 
 import com.company.studentOrder.domain.*;
 import com.company.studentOrder.exception.DaoException;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import java.time.LocalDate;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class StudentOrderDaoImplTest {
 
@@ -22,21 +18,17 @@ public class StudentOrderDaoImplTest {
     public void saveStudentOrder() throws DaoException {
         StudentOrder so = buildStudentOrder(10);
         long id = new StudentOrderDaoImpl().saveStudentOrder(so);
-
     }
     @Test(expected = DaoException.class)
     public void saveStudentOrderError() throws DaoException {
-
             StudentOrder so = buildStudentOrder(10);
             so.getHusband().setSorName(null);
             long id = new StudentOrderDaoImpl().saveStudentOrder(so);
-
     }
 
     @Test
     public void getStudentOrders() throws DaoException {
         List<StudentOrder> list = new StudentOrderDaoImpl().getStudentOrders();
-       // Assert.assertTrue(list.size()==2);
     }
 
     public StudentOrder buildStudentOrder(long id) {
