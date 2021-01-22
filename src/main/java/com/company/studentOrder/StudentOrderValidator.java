@@ -1,6 +1,8 @@
 package com.company.studentOrder;
 
+import com.company.dao.StudentOrderDaoImpl;
 import com.company.studentOrder.domain.*;
+import com.company.studentOrder.exception.DaoException;
 import com.company.studentOrder.mail.MailSender;
 import com.company.studentOrder.validator.ChildrenValidator;
 import com.company.studentOrder.validator.CityRegisterValidator;
@@ -32,9 +34,13 @@ public class StudentOrderValidator {
     }
 
     public void checkAll() {
-        List<StudentOrder> soList = readStudentOrders();
-        for (StudentOrder so : soList) {
-            checkOneOrder(so);
+        try {
+            List<StudentOrder> soList = readStudentOrders();
+            for (StudentOrder so : soList) {
+                checkOneOrder(so);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 
@@ -47,13 +53,8 @@ public class StudentOrderValidator {
         //sendMail(so);
     }
 
-    public List<StudentOrder> readStudentOrders() {
-        List<StudentOrder> soList = new LinkedList<>();
-        for (int c = 0; c < 5; c++) {
-                StudentOrder so = SaveStudentOrder.buildStudentOrder(c);
-                soList.add(so);
-            }
-        return soList;
+        public List<StudentOrder> readStudentOrders() throws DaoException {
+            return new StudentOrderDaoImpl().getStudentOrders();
         }
 
         public AnswerCityRegister checkCityRegister (StudentOrder so){
