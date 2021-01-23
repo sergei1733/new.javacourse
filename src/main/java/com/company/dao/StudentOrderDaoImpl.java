@@ -3,6 +3,8 @@ package com.company.dao;
 import com.company.config.Config;
 import com.company.studentOrder.domain.*;
 import com.company.studentOrder.exception.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class StudentOrderDaoImpl implements StudentOrderDao {
 
+    private static final Logger logger = LoggerFactory.getLogger(StudentOrderDaoImpl.class);
     private static final String INSERT_ORDER =
             "INSERT INTO jc_student_order(" +
                     " student_order_status, student_order_date, h_sur_name, " +
@@ -81,6 +84,9 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
     @Override
     public long saveStudentOrder(StudentOrder so) throws DaoException {
         long result = -1L;
+
+        logger.debug("SO: {]",so);
+
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(INSERT_ORDER, new String[]{"student_order_id"})) {
             con.setAutoCommit(false);//берем транзакцию в свои руки
@@ -116,6 +122,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
             }
 
         } catch (SQLException ex) {
+            logger.error(ex.getMessage(), ex);
             throw new DaoException(ex);
         }
         return result;
@@ -181,7 +188,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
         List<StudentOrder> result = new LinkedList<>();
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SELECT_ORDERS_FULL)) {
-            Map<Long,StudentOrder> maps = new HashMap<>();
+            Map<Long, StudentOrder> maps = new HashMap<>();
 
             stmt.setInt(1, StudentOrderStatus.START.ordinal());
             int limit = Integer.parseInt(Config.getProperties(Config.DB_LIMIT));
@@ -200,13 +207,14 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
                 so.addChild(fillChild(rs));
                 counter++;
             }
-            if (counter >= limit){
-                result.remove(result.size()-1);
+            if (counter >= limit) {
+                result.remove(result.size() - 1);
             }
             findChildren(con, result);
 
             rs.close();
         } catch (SQLException ex) {
+            logger.error(ex.getMessage(), ex);
             throw new DaoException(ex);
 
         }
@@ -222,7 +230,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
             stmt.setInt(1, StudentOrderStatus.START.ordinal());
             stmt.setInt(2, Integer.parseInt(Config.getProperties(Config.DB_LIMIT)));
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 StudentOrder so = getFullStudentOrder(rs);
 
                 result.add(so);
@@ -230,13 +238,14 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
             findChildren(con, result);
 
             rs.close();
-        } catch(SQLException ex) {
-            //logger.error(ex.getMessage(), ex);
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage(), ex);
             throw new DaoException(ex);
         }
 
         return result;
     }
+
     private StudentOrder getFullStudentOrder(ResultSet rs) throws SQLException {
         StudentOrder so = new StudentOrder();
 

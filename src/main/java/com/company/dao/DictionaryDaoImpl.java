@@ -1,17 +1,21 @@
 package com.company.dao;
 
-import com.company.config.Config;
 import com.company.studentOrder.domain.CountryArea;
 import com.company.studentOrder.domain.PassportOffice;
 import com.company.studentOrder.domain.RegisterOffice;
 import com.company.studentOrder.domain.Street;
 import com.company.studentOrder.exception.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DictionaryDaoImpl implements DictionaryDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(DictionaryDaoImpl.class);
+
     private static final String GET_STREET = "select street_code, street_name FROM jc_street where upper(street_name) like upper(?)";
     private static final String GET_PASSPORT = "select * FROM jc_passport_office WHERE p_office_area_id = ?";
     private static final String GET_REGISTER = "select * FROM jc_register_office WHERE r_office_area_id = ?";
@@ -33,6 +37,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
                 result.add(str);
             }
         } catch (SQLException ex) {
+            logger.error(ex.getMessage(),ex);
             throw new DaoException(ex);
         }
         return result;
@@ -55,6 +60,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
             }
             return result;
         } catch (SQLException ex) {
+            logger.error(ex.getMessage(),ex);
             throw new DaoException(ex);
         }
     }
@@ -75,6 +81,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
                 result.add(str);
             }
         } catch (SQLException ex) {
+            logger.error(ex.getMessage(), ex);
             throw new DaoException(ex);
         }
         return result;
@@ -99,6 +106,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
                 result.add(str);
             }
         } catch (SQLException ex) {
+            logger.error(ex.getMessage(),ex);
             throw new DaoException(ex);
         }
         return result;

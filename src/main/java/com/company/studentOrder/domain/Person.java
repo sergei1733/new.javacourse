@@ -59,4 +59,15 @@ public abstract class Person {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "sorName='" + sorName + '\'' +
+                ", givenName='" + givenName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", date0fBirth=" + date0fBirth +
+                ", address=" + address +
+                '}';
+    }
 }
