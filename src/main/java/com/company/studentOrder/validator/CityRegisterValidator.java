@@ -17,7 +17,7 @@ public class CityRegisterValidator {
 
     public CityRegisterValidator() {
 
-        personChecker = new FakeCityRegisterChecker();
+        personChecker = new RealCityRegisterChecker();
     }
 
     public AnswerCityRegister checkCityRegister(StudentOrder so) {
@@ -36,7 +36,7 @@ public class CityRegisterValidator {
         AnswerCityRegisterItem.CityError error = null;
         try {
             CityRegisterResponse tmp = personChecker.checkPerson(person);
-            status = tmp.isExisting()?
+            status = tmp.isRegistered()?
                     AnswerCityRegisterItem.CityStatus.YES:
                     AnswerCityRegisterItem.CityStatus.NO;
         } catch (CityRegisterException ex){

@@ -24,11 +24,11 @@ public class FakeCityRegisterChecker implements CityRegisterChecker{
             Adult t = (Adult)person;
             String ps = t.getPassportSeria();
             if (ps.equals(GOOD_1) || ps.equals(GOOD_2)){
-                res.setExisting(true);
+                res.setRegistered(true);
                 res.setTemporal(false);
             }
             if (ps.equals(BAD_1) || ps.equals(BAD_2)){
-                res.setExisting(false);
+                res.setRegistered(false);
             }
             if (ps.equals(ERROR_1) || ps.equals(ERROR_2)){
                 CityRegisterException ex =
@@ -43,7 +43,7 @@ public class FakeCityRegisterChecker implements CityRegisterChecker{
         }
         System.out.println(res);
         if (person instanceof Child){
-            res.setExisting(true);
+            res.setRegistered(true);
             res.setTemporal(true);
         }
 
