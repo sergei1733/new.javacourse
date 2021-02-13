@@ -18,9 +18,11 @@ public class RealCityRegisterChecker implements CityRegisterChecker {
 
         CityRegisterRequest request = new CityRegisterRequest(person);
         Client client = ClientBuilder.newClient();
-        client.target("http://localhost:8080/city-register-1.0/rest/check")
-        .request(MediaType.APPLICATION_JSON)
-        .post(Entity.entity(request, MediaType.APPLICATION_JSON));
-        return null;
+        CityRegisterResponse response = client.target("http://localhost:8080/city-register-1.0/rest/check")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(request, MediaType.APPLICATION_JSON))
+                .readEntity(CityRegisterResponse.class);
+
+        return response;
     }
 }
