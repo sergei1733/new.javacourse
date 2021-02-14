@@ -27,21 +27,20 @@ public class StudentOrderValidator {
         mailSender = new MailSender();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DaoException {
 
         StudentOrderValidator sov = new StudentOrderValidator();
         sov.checkAll();
     }
 
-    public void checkAll() {
-        try {
-            List<StudentOrder> soList = readStudentOrders();
-            for (StudentOrder so : soList) {
-                checkOneOrder(so);
-            }
-        }catch (Exception ex){
-            ex.printStackTrace();
+    public void checkAll() throws DaoException {
+
+        List<StudentOrder> soList = readStudentOrders();
+
+        for (StudentOrder so : soList) {
+            checkOneOrder(so);
         }
+
     }
 
     public void checkOneOrder(StudentOrder so) {
