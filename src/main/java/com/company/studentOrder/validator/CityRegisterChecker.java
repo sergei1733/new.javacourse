@@ -7,5 +7,5 @@ import com.company.studentOrder.exception.TransportException;
 
 public interface CityRegisterChecker {
     CityRegisterResponse checkPerson(Person person)
-            throws CityRegisterException, TransportException;
+            throws CityRegisterException;
 }
