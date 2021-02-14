@@ -2,7 +2,6 @@ package com.company.studentOrder.validator;
 
 import com.company.studentOrder.domain.*;
 import com.company.studentOrder.exception.CityRegisterException;
-import com.company.studentOrder.exception.TransportException;
 
 import java.util.List;
 
@@ -43,10 +42,7 @@ public class CityRegisterValidator {
             ex.printStackTrace(System.out);
             status = AnswerCityRegisterItem.CityStatus.ERROR;
             error = new AnswerCityRegisterItem.CityError(ex.getCode(),ex.getMessage());
-        }catch (TransportException ex){
-            ex.printStackTrace(System.out);
-            status = AnswerCityRegisterItem.CityStatus.ERROR;
-            error = new AnswerCityRegisterItem.CityError(IN_CODE,ex.getMessage());
+
         }
         AnswerCityRegisterItem ans =
                 new AnswerCityRegisterItem(status,person,error);
